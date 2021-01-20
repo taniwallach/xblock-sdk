@@ -20,6 +20,8 @@ This code runs on Python 3.5 or newer.
 
     $ sudo apt-get install python-dev libxml2-dev libxslt-dev lib32z1-dev libjpeg62-dev
 
+    Note: Debian 10 needs ibjpeg62-turbo-dev instead of libjpeg62-dev.
+
 #.  Get a local copy of this repo.
 
 #.  Create and activate a virtualenv to work in.
@@ -37,17 +39,32 @@ This code runs on Python 3.5 or newer.
 Docker
 ------
 
-Alternatively, you can build and run the xblock-sdk in Docker.
+Alternatively, you can build and run the xblock-sdk in Docker (we are using docker-compose which
+can be installed as explained at https://docs.docker.com/compose/install/)
 
 After cloning this repository locally, go into the repository directory and build the Docker image::
 
-    $ docker build -t xblock-sdk .
+    $ docker-compose build
 
 You can then run the locally-built version using the following command::
 
-    $ docker run -d -p 8000:8000 --name xblock-sdk xblock-sdk
+    $ docker-compose up -d
+
+and shut-down the container by::
+
+    $ docker-compose down
+
+On the first startup run the following command to create the SQLite database.
+(Otherwise you will get an error no such table: workbench_xblockstate.)
+Command::
+
+    $ docker container exec -it xblock-sdk_xblock_sdk_1 python3.8 manage.py migrate
 
 You should now be able to access the XBlock SDK environment in your browser at http://localhost:8000
+
+You can open a bash shell in the running container by using::
+
+    $ docker container exec -it xblock-sdk_xblock_sdk_1 bash
 
 Testing
 --------
@@ -59,6 +76,9 @@ Testing is done via tox to test all supported versions:
 #.  Run just unit tests via tox::
 
     $ tox
+
+(Docker users should run tox inside a bash shell in the running container.
+Start the shell using "docker container exec -it xblock-sdk_xblock_sdk_1 bash")
 
 For each supported version of Django (currently 1.8 and 1.11) this will run:
 
