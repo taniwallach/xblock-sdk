@@ -1,0 +1,35 @@
+version: '3.5'
+services:
+  xblock_sdk:
+    image: xblock-sdk
+
+    # Select the appropriate "build:" block:
+
+    # For use/building when docker-compose.yml is in the xblock-sdk directory
+    build: .
+
+    # For use/building when docker-compose.yml is OUTSIDE the xblock-sdk directory.
+    #build:
+    #  context: /Path_To/xblock-sdk/
+    #  dockerfile: /Path_To/Dockerfile
+
+    volumes:
+      # Provide a persistant location for the SQLite database
+      - xblock-var:/usr/local/src/xblock-sdk/var
+
+      # Bind mounts into a running container
+      #- "/Path_To/file:/Path_To_Target_dir/file"
+
+    # END volumes
+
+    hostname: localhost
+    ports:
+      - "8000:8000"
+
+#    environment:
+#      SYSTEM_TIMEZONE: Asia/Jerusalem
+
+# For persistant storage
+volumes:
+  # For the SQLite database
+  xblock-var:
