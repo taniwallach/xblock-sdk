@@ -102,6 +102,9 @@ dev.down: # Kills containers and all of their data that isn't in volumes
 dev.stop: # Stops containers so they can be restarted
 	docker-compose stop
 
+app-shell: # Run bash in the container as root
+	docker exec -u 0 -it edx.devstack.xblock-sdk bash
+
 travis_docker_auth:
 	echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USERNAME" --password-stdin
 

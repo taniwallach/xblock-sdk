@@ -54,17 +54,27 @@ You can then run the locally-built version using the following command::
 
     $ make dev.up
 
-or manually run
+or manually run::
 
     $ docker-compose up -d
 
-and shut-down the container by::
+and stop the container (without removing data) by::
+
+    $ make dev.stop
+
+or manually run::
+
+    $ docker-compose stop
+
+Note, using::
 
     $ make dev.down
 
-or manually run
+or::
 
     $ docker-compose down
+
+will shut down the container and delete non-persistant data.
 
 On the first startup run the following command to create the SQLite database.
 (Otherwise you will get an error no such table: workbench_xblockstate.)
@@ -76,6 +86,10 @@ Command::
 You should now be able to access the XBlock SDK environment in your browser at http://localhost:8000
 
 You can open a bash shell in the running container by using::
+
+    $ make app-shell
+
+or::
 
     $ docker container exec -it edx.devstack.xblock-sdk bash
 
